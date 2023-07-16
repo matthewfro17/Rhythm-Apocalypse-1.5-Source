@@ -58,6 +58,7 @@ class MainMenuState extends MusicBeatState
 	var camFollowPos:FlxObject;
 	var debugKeys:Array<FlxKey>;
 
+	var checker:FlxBackdrop = new FlxBackdrop(Paths.image('ui/checkeredBG'), 0.2, 0.2, true, true);
 	override function create()
 	{
 		#if MODS_ALLOWED
@@ -87,8 +88,12 @@ class MainMenuState extends MusicBeatState
 
 		persistentUpdate = persistentDraw = true;
 
-		var yScroll:Float = Math.max(0.25 - (0.05 * (optionShit.length - 4)), 0.1);
-        var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('menuBG'));
+	checker.scrollFactor.set(0, 0.07);
+	checker.antialiasing = FlxG.save.data.globalAntialiasing;
+	add(checker);
+
+	var yScroll:Float = Math.max(0.25 - (0.05 * (optionShit.length - 4)), 0.1);
+        var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('epic_bg'));
         bg.scrollFactor.set(0, yScroll);
         bg.setGraphicSize(Std.int(bg.width * 1.175));
         bg.updateHitbox();
@@ -98,7 +103,7 @@ class MainMenuState extends MusicBeatState
 
         if(ClientPrefs.themedmainmenubg == true) {
 
-            var themedBg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('menuDesat'));
+            var themedBg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('epic_bg'));
             themedBg.scrollFactor.set(0, yScroll);
             themedBg.setGraphicSize(Std.int(bg.width));
             themedBg.updateHitbox();
@@ -119,7 +124,7 @@ class MainMenuState extends MusicBeatState
         add(camFollow);
         add(camFollowPos);
 
-        magenta = new FlxSprite(-80).loadGraphic(Paths.image('menuDesat'));
+        magenta = new FlxSprite(-80).loadGraphic(Paths.image('epic_bg'));
         magenta.scrollFactor.set(0, yScroll);
         magenta.setGraphicSize(Std.int(magenta.width * 1.175));
         magenta.updateHitbox();
@@ -150,9 +155,9 @@ class MainMenuState extends MusicBeatState
 			var menuItem:FlxSprite = new FlxSprite(curoffset, (i * 140) + offset);
 			menuItem.scale.x = scale;
 			menuItem.scale.y = scale;
-			menuItem.frames = Paths.getSparrowAtlas('mainmenu/menu_' + optionShit[i]);
-			menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
-			menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
+			menuItem.frames = Paths.getSparrowAtlas('menuStuff' + optionShit[i]);
+			menuItem.animation.addByPrefix('idle', optionShit[i] + "", 24);
+			menuItem.animation.addByPrefix('selected', optionShit[i] + "_SELECTED", 24);
 			menuItem.animation.play('idle');
 			menuItem.ID = i;
 			//menuItem.screenCenter(X);
@@ -164,6 +169,7 @@ class MainMenuState extends MusicBeatState
 			//menuItem.setGraphicSize(Std.int(menuItem.width * 0.58));
 			menuItem.updateHitbox();
 			//curoffset = curoffset + 20;
+
 		}
 
 		FlxG.camera.follow(camFollowPos, null, 1);
